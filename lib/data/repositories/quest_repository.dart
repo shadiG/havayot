@@ -13,6 +13,14 @@ class LocalQuestRepository implements QuestRepository {
       Question((b) => b
         ..value = "Quel roi a écrit la majorité des Psaumes dans la Bible ?"
         ..choices = ['David', 'Salomon', 'Moïse', 'Samuel']
+            .map((e) => Choice((c) => c..value = e)).toBuiltList().toBuilder()),
+      Question((b) => b
+        ..value = "Combien de disciples Jésus avait-il ?"
+        ..choices = ['12', '10', '7', '15']
+            .map((e) => Choice((c) => c..value = e)).toBuiltList().toBuilder()),
+      Question((b) => b
+        ..value = "Quel apôtre a renié Jésus trois fois avant le chant du coq ?"
+        ..choices = ['Pierre', 'Jean', 'Jacques', 'André']
             .map((e) => Choice((c) => c..value = e)).toBuiltList().toBuilder())
     ].toBuiltList();
   }

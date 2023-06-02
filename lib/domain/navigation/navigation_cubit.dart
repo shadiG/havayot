@@ -36,6 +36,6 @@ class NavigationCubit extends HvCubit<NavigationModel> {
 abstract class NavigationModel implements Built<NavigationModel, NavigationModelBuilder> {
 
   NavigationModel._();
-  factory NavigationModel([Function(NavigationModelBuilder b) updates]) = _$NavigationModel;
+  factory NavigationModel([void Function(NavigationModelBuilder b) updates]) = _$NavigationModel;
   static Serializer<NavigationModel> get serializer => _$navigationModelSerializer;
 }

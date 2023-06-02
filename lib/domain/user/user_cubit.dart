@@ -1,4 +1,5 @@
 import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
 import 'package:havayot/common/hv_cubit.dart';
 import 'package:havayot/domain/navigation/navigation_cubit.dart';
 
@@ -16,5 +17,6 @@ class UserCubit extends HvCubit<UserModel> {
 abstract class UserModel implements Built<UserModel, UserModelBuilder> {
   UserModel._();
 
-  factory UserModel([Function(UserModelBuilder b) updates]) = _$UserModel;
+  factory UserModel([void Function(UserModelBuilder b) updates]) = _$UserModel;
+  static Serializer<UserModel> get serializer => _$userModelSerializer;
 }

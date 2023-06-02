@@ -6,6 +6,62 @@ part of 'quest_cubit.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<QuestModel> _$questModelSerializer = new _$QuestModelSerializer();
+
+class _$QuestModelSerializer implements StructuredSerializer<QuestModel> {
+  @override
+  final Iterable<Type> types = const [QuestModel, _$QuestModel];
+  @override
+  final String wireName = 'QuestModel';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers, QuestModel object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      'questionsF',
+      serializers.serialize(object.questionsF,
+          specifiedType: const FullType(Fetchable, const [
+            const FullType(BuiltList, const [const FullType(Question)])
+          ])),
+      'questDurationF',
+      serializers.serialize(object.questDurationF,
+          specifiedType:
+              const FullType(Fetchable, const [const FullType(int)])),
+    ];
+
+    return result;
+  }
+
+  @override
+  QuestModel deserialize(Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new QuestModelBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'questionsF':
+          result.questionsF = serializers.deserialize(value,
+              specifiedType: const FullType(Fetchable, const [
+                const FullType(BuiltList, const [const FullType(Question)])
+              ]))! as Fetchable<BuiltList<Question>>;
+          break;
+        case 'questDurationF':
+          result.questDurationF = serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(Fetchable, const [const FullType(int)]))!
+              as Fetchable<int>;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$QuestModel extends QuestModel {
   @override
   final Fetchable<BuiltList<Question>> questionsF;

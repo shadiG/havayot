@@ -94,14 +94,14 @@ HvThemeData createHvThemeData(BuildContext context) {
       primarStyle: basicTextStyle,
       white1: white,
       h1: basicTextStyle.copyWith(
-        fontWeight: FontWeight.w900,
-        fontSize: 24.0,
-        height: adjustTextHeightTo(32.0, 24.0),
+        fontWeight: FontWeight.w600,
+        fontSize: 20.0,
+        height: adjustTextHeightTo(30.0, 22.0),
       ),
       h2: basicTextStyle.copyWith(
         fontWeight: FontWeight.w600,
-        fontSize: 20.0,
-        height: adjustTextHeightTo(28.0, 20.0),
+        fontSize: 22.0,
+        height: adjustTextHeightTo(28.0, 22.0),
       ),
       thin1: basicTextStyle.copyWith(
         fontWeight: FontWeight.w200,

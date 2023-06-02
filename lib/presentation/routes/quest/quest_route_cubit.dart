@@ -95,19 +95,20 @@ class QuestRouteCubit extends HvCubit<QuestRouteModel> {
           final currentQuestionIndex =
           questions.indexWhere((question) => question == selectedQuestion);
           return (currentQuestionIndex < questions.length)
-              ? questions[currentQuestionIndex]
+              ? questions[currentQuestionIndex+1]
               : questions.first;
         }();
-        countDownController.reset();
         emit(state.rebuild((b) => b
           ..selectedQuestionF = Fetchable.success(nextQuestion)
           ..selectedChoiceF = Fetchable.success(null)
 
         ));
+        countDownController.restart();
       });
     }).presentP(this, (goToNextQuestionP) {});
   }
 }
+
 
 abstract class QuestRouteModel implements Built<QuestRouteModel, QuestRouteModelBuilder> {
   //question management
@@ -118,5 +119,5 @@ abstract class QuestRouteModel implements Built<QuestRouteModel, QuestRouteModel
   
   QuestRouteModel._();
 
-  factory QuestRouteModel([Function(QuestRouteModelBuilder b) updates]) = _$QuestRouteModel;
+  factory QuestRouteModel([void Function(QuestRouteModelBuilder b) updates]) =_$QuestRouteModel;
 }

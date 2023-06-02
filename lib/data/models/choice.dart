@@ -8,6 +8,7 @@ abstract class Choice implements Built<Choice, ChoiceBuilder> {
   String get value;
 
   Choice._();
-  factory Choice([Function(ChoiceBuilder b) updates]) = _$Choice;
+  factory Choice([void Function(ChoiceBuilder b) updates]) = _$Choice;
+
   static Serializer<Choice> get serializer => _$choiceSerializer;
 }

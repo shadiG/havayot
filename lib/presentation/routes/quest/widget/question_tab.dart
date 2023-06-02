@@ -21,8 +21,8 @@ class QuestionTab extends StatelessWidget {
     final theme = HvTheme.of(context);
     return Tappable(
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-        margin: const EdgeInsets.only(bottom: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+        margin: const EdgeInsets.only(bottom: 25),
         width: double.infinity,
         decoration: BoxDecoration(
           color: theme.secondary,
@@ -34,7 +34,9 @@ class QuestionTab extends StatelessWidget {
             HvRadio<Choice>(
               value: choice,
               groupValue: selectedChoice,
-              onChanged: (value) {},
+              onChanged: (value) {
+                onTap.call(value);
+              },
               size: 20,
             ),
             const SizedBox(

@@ -6,11 +6,13 @@ class QuestClock extends StatelessWidget {
   final CountDownController controller;
   final int initialDuration;
   final int duration;
+  final VoidCallback onCountDownEnd;
 
   const QuestClock({
     required this.controller,
     required this.initialDuration,
     required this.duration,
+    required this.onCountDownEnd,
     super.key,
   });
 
@@ -29,10 +31,10 @@ class QuestClock extends StatelessWidget {
       fillGradient: null,
       backgroundColor: theme.primary,
       backgroundGradient: null,
-      strokeWidth: 5.0,
+      strokeWidth: 10.0,
       strokeCap: StrokeCap.round,
       textStyle: theme.h2,
-      textFormat: CountdownTextFormat.S,
+      textFormat: CountdownTextFormat.MM_SS,
       isReverse: true,
       isReverseAnimation: true,
       isTimerTextShown: true,
@@ -41,17 +43,13 @@ class QuestClock extends StatelessWidget {
         debugPrint('Countdown Started');
       },
       onComplete: () {
-        debugPrint('Countdown Ended');
+        onCountDownEnd.call();
       },
       onChange: (String timeStamp) {
         debugPrint('Countdown Changed $timeStamp');
       },
       timeFormatterFunction: (defaultFormatterFunction, duration) {
-        if (duration.inSeconds == 0) {
-          return "Commencer";
-        } else {
-          return Function.apply(defaultFormatterFunction, [duration]);
-        }
+        return Function.apply(defaultFormatterFunction, [duration]);
       },
     );
   }

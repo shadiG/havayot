@@ -1,6 +1,7 @@
 import 'package:able/able.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
 import 'package:havayot/common/hv_cubit.dart';
 import 'package:havayot/data/models/question.dart';
 import 'package:havayot/data/repositories/quest_repository.dart';
@@ -17,14 +18,13 @@ class QuestCubit extends HvCubit<QuestModel> {
       ..questionsF = Fetchable.idle()
       ..questDurationF = Fetchable.idle()
   )) {
-    emit(state.rebuild((b) => b..questDurationF = Fetchable.success(15)));
+    emit(state.rebuild((b) => b..questDurationF = Fetchable.success(10)));
     _initQuestions();
   }
 
   void _initQuestions() {
     futureAsFetchable(() async => await questRepository.getQuestions())
-        .presentF(this,
-        (questionsF) {
+        .presentF(this, (questionsF) {
       emit(state.rebuild((b) => b..questionsF = questionsF));
     });
   }
@@ -34,6 +34,8 @@ abstract class QuestModel implements Built<QuestModel, QuestModelBuilder> {
   Fetchable<BuiltList<Question>> get questionsF;
   Fetchable<int> get questDurationF;
   QuestModel._();
+  
+  factory QuestModel([updates(QuestModelBuilder b)]) = _$QuestModel;
+  static Serializer<QuestModel> get serializer => _$questModelSerializer;
 
-  factory QuestModel([Function(QuestModelBuilder b) updates]) = _$QuestModel;
 }

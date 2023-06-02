@@ -28,15 +28,15 @@ class _QuestRouteState extends State<QuestRoute> {
 
   @override
   void initState() {
-    controller = CountDownController();
     super.initState();
+    controller = CountDownController();
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = HvTheme.of(context);
     return BlocProvider(
-      create: (context) => QuestRouteCubit(
+      create: (_) => QuestRouteCubit(
         questCubit: widget.appComponent.questCubit,
         countDownController: controller,
       ),
@@ -44,12 +44,12 @@ class _QuestRouteState extends State<QuestRoute> {
         body: Builder(
           key: _cubitKey,
           builder: (context) {
-            final selectedChoiceF =
-                context.select((QuestRouteCubit value) => value.state.selectedChoiceF);
             final questDurationF =
                 context.select((QuestRouteCubit value) => value.state.questDurationF);
             final selectedQuestionF =
                 context.select((QuestRouteCubit value) => value.state.selectedQuestionF);
+            final selectedChoiceF =
+                context.select((QuestRouteCubit value) => value.state.selectedChoiceF);
 
             return Stack(
               fit: StackFit.expand,
@@ -74,6 +74,9 @@ class _QuestRouteState extends State<QuestRoute> {
                                 controller: controller,
                                 duration: questDuration,
                                 initialDuration: 0,
+                                onCountDownEnd: () {
+                                  context.read<QuestRouteCubit>().goToNextQuestion();
+                                },
                               ),
                             );
                           },

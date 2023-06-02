@@ -12,6 +12,7 @@ abstract class Question implements Built<Question, QuestionBuilder> {
   BuiltList<Choice> get choices;
 
   Question._();
-  factory Question([Function(QuestionBuilder b) updates]) = _$Question;
+  factory Question([void Function(QuestionBuilder b) updates]) = _$Question;
+
   static Serializer<Question> get serializer => _$questionSerializer;
 }

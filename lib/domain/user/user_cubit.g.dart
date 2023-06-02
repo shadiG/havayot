@@ -6,6 +6,27 @@ part of 'user_cubit.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<UserModel> _$userModelSerializer = new _$UserModelSerializer();
+
+class _$UserModelSerializer implements StructuredSerializer<UserModel> {
+  @override
+  final Iterable<Type> types = const [UserModel, _$UserModel];
+  @override
+  final String wireName = 'UserModel';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers, UserModel object,
+      {FullType specifiedType = FullType.unspecified}) {
+    return <Object?>[];
+  }
+
+  @override
+  UserModel deserialize(Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    return new UserModelBuilder().build();
+  }
+}
+
 class _$UserModel extends UserModel {
   factory _$UserModel([void Function(UserModelBuilder)? updates]) =>
       (new UserModelBuilder()..update(updates))._build();
