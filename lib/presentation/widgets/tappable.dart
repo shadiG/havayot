@@ -4,13 +4,12 @@ import 'package:flutter/widgets.dart';
 
 class Tappable extends StatefulWidget {
   const Tappable({
-    Key? key,
+    super.key,
     required this.child,
     this.padding,
     this.pressedOpacity = 0.4,
     required this.onTap,
-  }) : assert(pressedOpacity == null || (pressedOpacity >= 0.0 && pressedOpacity <= 1.0)),
-        super(key: key);
+  }) : assert(pressedOpacity == null || (pressedOpacity >= 0.0 && pressedOpacity <= 1.0));
 
   final Widget child;
   final EdgeInsetsGeometry? padding;
@@ -96,15 +95,17 @@ class _TappableState extends State<Tappable> with SingleTickerProviderStateMixin
   }
 
   void _animate() {
-    if (_animationController.isAnimating)
+    if (_animationController.isAnimating) {
       return;
+    }
     final bool wasHeldDown = _buttonHeldDown;
     final TickerFuture ticker = _buttonHeldDown
         ? _animationController.animateTo(1.0, duration: kFadeOutDuration)
         : _animationController.animateTo(0.0, duration: kFadeInDuration);
     ticker.then<void>((void value) {
-      if (mounted && wasHeldDown != _buttonHeldDown)
+      if (mounted && wasHeldDown != _buttonHeldDown) {
         _animate();
+      }
     });
   }
 

@@ -5,16 +5,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:havayot/presentation/app_component.dart';
 import 'package:havayot/presentation/routes/quest/quest_route_cubit.dart';
+import 'package:havayot/presentation/routes/quest/widget/choice/bullet_choice.dart';
+import 'package:havayot/presentation/routes/quest/widget/choice/card_choice.dart';
+import 'package:havayot/presentation/routes/quest/widget/grid_list_choices.dart';
 import 'package:havayot/presentation/routes/quest/widget/quest_clock.dart';
-import 'package:havayot/presentation/routes/quest/widget/question_tab.dart';
+import 'package:havayot/presentation/routes/quest/widget/vertical_list_choices.dart';
 import 'package:havayot/presentation/widgets/hv_divider.dart';
 import 'package:havayot/presentation/widgets/hv_theme.dart';
+import 'package:havayot/presentation/utils/choices_utils.dart';
+import 'package:tuple/tuple.dart';
 
 class QuestRoute extends StatefulWidget {
   final AppComponent appComponent;
 
-  const QuestRoute(
-    this.appComponent, {
+  const QuestRoute(this.appComponent, {
     super.key,
   });
 
@@ -23,33 +27,38 @@ class QuestRoute extends StatefulWidget {
 }
 
 class _QuestRouteState extends State<QuestRoute> {
-  late CountDownController controller;
   final GlobalKey _cubitKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
-    controller = CountDownController();
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = HvTheme.of(context);
+    final lettersWithColors = [
+      Tuple2('A', theme.green),
+      Tuple2('B', theme.teal),
+      Tuple2('C', theme.blue),
+      Tuple2('D', theme.purple)
+    ];
+
     return BlocProvider(
-      create: (_) => QuestRouteCubit(
-        questCubit: widget.appComponent.questCubit,
-        countDownController: controller,
-      ),
+      create: (_) =>
+          QuestRouteCubit(
+            questCubit: widget.appComponent.questCubit,
+          ),
       child: Scaffold(
         body: Builder(
           key: _cubitKey,
           builder: (context) {
             final questDurationF =
-                context.select((QuestRouteCubit value) => value.state.questDurationF);
+            context.select((QuestRouteCubit value) => value.state.questDurationF);
             final selectedQuestionF =
-                context.select((QuestRouteCubit value) => value.state.selectedQuestionF);
+            context.select((QuestRouteCubit value) => value.state.selectedQuestionF);
             final selectedChoiceF =
-                context.select((QuestRouteCubit value) => value.state.selectedChoiceF);
+            context.select((QuestRouteCubit value) => value.state.selectedChoiceF);
 
             return Stack(
               fit: StackFit.expand,
@@ -61,7 +70,10 @@ class _QuestRouteState extends State<QuestRoute> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SizedBox(
-                          height: (MediaQuery.of(context).viewPadding.top + 40),
+                          height: (MediaQuery
+                              .of(context)
+                              .viewPadding
+                              .top + 40),
                         ),
                         widgetForFetchable(
                           context: context,
@@ -71,7 +83,6 @@ class _QuestRouteState extends State<QuestRoute> {
                               height: 170,
                               width: 170,
                               child: QuestClock(
-                                controller: controller,
                                 duration: questDuration,
                                 initialDuration: 0,
                                 onCountDownEnd: () {
@@ -80,10 +91,11 @@ class _QuestRouteState extends State<QuestRoute> {
                               ),
                             );
                           },
-                          buildError: (context, e) => Text(
-                            'Unexpected error',
-                            style: theme.thin1,
-                          ),
+                          buildError: (context, e) =>
+                              Text(
+                                'Unexpected error',
+                                style: theme.thin1,
+                              ),
                         ),
                         const SizedBox(
                           height: 30,
@@ -98,10 +110,11 @@ class _QuestRouteState extends State<QuestRoute> {
                               textAlign: TextAlign.center,
                             );
                           },
-                          buildError: (context, e) => Text(
-                            'Unexpected error',
-                            style: theme.thin1,
-                          ),
+                          buildError: (context, e) =>
+                              Text(
+                                'Unexpected error',
+                                style: theme.thin1,
+                              ),
                         ),
                         const SizedBox(
                           height: 40,
@@ -112,26 +125,26 @@ class _QuestRouteState extends State<QuestRoute> {
                           buildSuccess: (context, data) {
                             final selectedQuestion = data.item1;
                             final selectedChoice = data.item2;
-                            return Column(
-                              children: [
-                                ...selectedQuestion.choices
-                                    .map(
-                                      (choice) => QuestionTab(
-                                        choice: choice,
-                                        selectedChoice: selectedChoice,
-                                        onTap: (choice) {
-                                          context.read<QuestRouteCubit>().setSelectedChoice(choice);
-                                        },
-                                      ),
-                                    )
-                                    .toList(),
-                              ],
-                            );
+                            final children = selectedQuestion.choices
+                                .mapLettersWithColors(lettersWithColors)
+                                .map((choiceWithLetterWithColor) =>
+                                CardChoice(
+                                  choice: choiceWithLetterWithColor.item1,
+                                  letter: choiceWithLetterWithColor.item2,
+                                  color: choiceWithLetterWithColor.item3,
+                                  selectedChoice: selectedChoice,
+                                  onTap: (choice) {
+                                    context.read<QuestRouteCubit>().setSelectedChoice(choice);
+                                  },
+                                ))
+                                .toList();
+                            return GridListChoices(children: children);
                           },
-                          buildError: (context, e) => Text(
-                            'Unexpected error',
-                            style: theme.thin1,
-                          ),
+                          buildError: (context, e) =>
+                              Text(
+                                'Unexpected error',
+                                style: theme.thin1,
+                              ),
                         ),
                       ],
                     ),

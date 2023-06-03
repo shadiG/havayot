@@ -12,11 +12,9 @@ part 'quest_route_cubit.g.dart';
 
 class QuestRouteCubit extends HvCubit<QuestRouteModel> {
   final QuestCubit questCubit;
-  final CountDownController countDownController;
 
   QuestRouteCubit({
     required this.questCubit,
-    required this.countDownController,
   }) : super(QuestRouteModel((b) => b
           ..questionsF = Fetchable.idle()
           ..questDurationF = Fetchable.idle()
@@ -59,7 +57,6 @@ class QuestRouteCubit extends HvCubit<QuestRouteModel> {
         .distinct()
         .takeWhileInclusive((m) => !m.success)
         .flatMapOnSuccessFToProgressable((questions) => futureAsProgressable(() async {
-              countDownController.start();
               emit(state.rebuild((b) => b
                 ..selectedQuestionF = Fetchable.success(questions.first)
                 ..selectedChoiceF = Fetchable.success(null)));
@@ -69,6 +66,7 @@ class QuestRouteCubit extends HvCubit<QuestRouteModel> {
 
   void setSelectedChoice(Choice choice) {
     emit(state.rebuild((b) => b..selectedChoiceF = Fetchable.success(choice)));
+    goToNextQuestion();
   }
 
   void goToNextQuestion() {
@@ -101,9 +99,8 @@ class QuestRouteCubit extends HvCubit<QuestRouteModel> {
         emit(state.rebuild((b) => b
           ..selectedQuestionF = Fetchable.success(nextQuestion)
           ..selectedChoiceF = Fetchable.success(null)
-
         ));
-        countDownController.restart();
+        _initQuestDuration();
       });
     }).presentP(this, (goToNextQuestionP) {});
   }

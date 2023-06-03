@@ -55,6 +55,12 @@ class HvThemeData {
   final Color primary1;
   final Color primary2;
   final Color white1;
+  final Color black;
+  final Color green;
+  final Color teal;
+  final Color blue;
+  final Color purple;
+  final Color gold;
 
   final String defaultFontFamily;
   final TextStyle primarStyle;
@@ -72,6 +78,12 @@ class HvThemeData {
     required this.primary2,
     required this.secondary,
     required this.white1,
+    required this.black,
+    required this.green,
+    required this.teal,
+    required this.blue,
+    required this.purple,
+    required this.gold,
     required this.defaultFontFamily,
     required this.primarStyle,
     required this.h1,
@@ -93,6 +105,13 @@ HvThemeData createHvThemeData(BuildContext context) {
       defaultFontFamily: defaultFontFamily,
       primarStyle: basicTextStyle,
       white1: white,
+      black: const Color(0xFF000000),
+      green: const Color(0xFF059C8B),
+      teal: const Color(0xFF1B8AA5),
+      purple: const Color(0xFF3B6DA0),
+      blue: const Color(0xFF705598),
+      gold: const Color(0xFFE8B70D),
+
       h1: basicTextStyle.copyWith(
         fontWeight: FontWeight.w600,
         fontSize: 20.0,
