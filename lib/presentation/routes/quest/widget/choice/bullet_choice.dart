@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:havayot/data/models/choice.dart';
 import 'package:havayot/presentation/routes/quest/widget/choice/choice_frame.dart';
 import 'package:havayot/presentation/utils/color_utils.dart';
 import 'package:havayot/presentation/widgets/hv_theme.dart';
@@ -37,7 +36,6 @@ class BulletChoice extends ChoiceFrame {
                 decoration: BoxDecoration(
                   color: color.darken(),
                   borderRadius: BorderRadius.circular(8),
-                  boxShadow: theme.shadow,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 20),
@@ -75,7 +73,7 @@ class CircledChoiceLead extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = HvTheme.of(context);
     return Card(
-      elevation: 6.0,
+      elevation: 3.0,
       shape: const CircleBorder(),
       child: Container(
         width: _size,

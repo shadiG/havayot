@@ -4,23 +4,30 @@ import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:havayot/presentation/app_component.dart';
 import 'package:havayot/presentation/routes.dart';
-import 'package:havayot/presentation/routes/quest/quest_route.dart';
 import 'package:havayot/presentation/widgets/hv_theme.dart';
+
+import 'data/l10n/l10n.dart';
 
 void Function(dynamic e)? showError;
 
 void main() async {
   var version = Platform.version;
-  print('dart version $version');
+  if (kDebugMode) {
+    print('dart version $version');
+  }
 
   runZonedGuarded<Future<void>>(() async {
     WidgetsBinding widgetsBinding = WidgetsFlutterBinding
         .ensureInitialized(); // should be called inside runZonedGuarded for error handling to work
 
     FlutterError.onError = (details) {
-      print('error caught by FlutterError.onError');
+      if (kDebugMode) {
+        print('error caught by FlutterError.onError');
+      }
     };
 
     runApp(Havayot(
@@ -87,6 +94,14 @@ class HavayotState extends State<Havayot> with WidgetsBindingObserver {
     return MaterialApp(
       navigatorKey: navigatorGlobalKey,
       onGenerateRoute: (settings) => onGenerateRoute(widget.appComponent, settings),
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: L10n.defaultLocale,
+      supportedLocales: L10n.supportedLocales,
       theme: () {
         final materialTheme = ThemeData(
           primaryColor: theme.primary,

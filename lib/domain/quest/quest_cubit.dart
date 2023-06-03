@@ -18,7 +18,9 @@ class QuestCubit extends HvCubit<QuestModel> {
       ..questionsF = Fetchable.idle()
       ..questDurationF = Fetchable.idle()
   )) {
-    emit(state.rebuild((b) => b..questDurationF = Fetchable.success(10)));
+    emit(state.rebuild((b) => b
+      ..questDurationF = Fetchable.success(10)
+    ));
     _initQuestions();
   }
 
@@ -35,7 +37,7 @@ abstract class QuestModel implements Built<QuestModel, QuestModelBuilder> {
   Fetchable<int> get questDurationF;
   QuestModel._();
   
-  factory QuestModel([updates(QuestModelBuilder b)]) = _$QuestModel;
+  factory QuestModel([void Function(QuestModelBuilder b) updates]) = _$QuestModel;
   static Serializer<QuestModel> get serializer => _$questModelSerializer;
 
 }

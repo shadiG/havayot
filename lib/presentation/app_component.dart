@@ -2,7 +2,6 @@ import 'package:havayot/data/repositories/quest_repository.dart';
 import 'package:havayot/domain/navigation/navigation_cubit.dart';
 import 'package:havayot/domain/quest/quest_cubit.dart';
 import 'package:havayot/domain/user/user_cubit.dart';
-import 'package:havayot/presentation/routes/quest/widget/quest_clock.dart';
 
 class AppComponent {
   final UserCubit userCubit;

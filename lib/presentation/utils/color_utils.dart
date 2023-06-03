@@ -1,11 +1,22 @@
 import 'dart:math';
 
+import 'package:built_collection/built_collection.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:tuple/tuple.dart';
 
 extension ColorBrightness on Color {
+  LinearGradient toLinearGradient({AlignmentGeometry begin = Alignment.centerLeft, AlignmentGeometry end = Alignment.centerRight}) {
+    return LinearGradient(
+      begin: begin,
+      end: end,
+      tileMode: TileMode.mirror,
+      colors: [this, random()],
+    );
+  }
   Color random() {
     final random = Random();
-    final randomColorValue = random.nextInt(10);
+    final randomColorValue = random.nextInt(2);
     final toApply = [
       withBlue(randomColorValue),
       withGreen(randomColorValue),
@@ -32,5 +43,13 @@ extension ColorBrightness on Color {
     hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
 
     return hslLight.toColor();
+  }
+}
+
+extension ListColorsExtension on List<Color>{
+  BuiltList<Tuple2< String, Color>> mapLettersWithColors(List<String> letters) {
+    assert(length == letters.length);
+    return mapIndexed((index, value) => Tuple2(letters[index], value))
+        .toBuiltList();
   }
 }

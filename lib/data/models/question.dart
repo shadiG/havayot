@@ -10,6 +10,7 @@ abstract class Question implements Built<Question, QuestionBuilder> {
 
   String get value;
   BuiltList<Choice> get choices;
+  String get answer;
 
   Question._();
   factory Question([void Function(QuestionBuilder b) updates]) = _$Question;

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-abstract class CountDown extends StatelessWidget {
+abstract class CountDownFrame extends StatelessWidget {
   final int initialDuration;
   final int duration;
   final VoidCallback onCountDownEnd;
   final VoidCallback? startCountDown;
 
-  const CountDown({
+  const CountDownFrame({
     required this.initialDuration,
     required this.duration,
     this.startCountDown,

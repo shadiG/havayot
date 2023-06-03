@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:havayot/presentation/routes/quest/widget/choice/choice_frame.dart';
-import 'package:havayot/presentation/utils/color_utils.dart';
 import 'package:havayot/presentation/widgets/hv_theme.dart';
 import 'package:havayot/presentation/widgets/tappable.dart';
 
@@ -26,9 +25,8 @@ class CardChoice extends ChoiceFrame {
           width: 40,
           height: 40,
           decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(10),
             color: color,
+            borderRadius: BorderRadius.circular(12)
           ),
           child: Center(
             child: Text(

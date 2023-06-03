@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'hv_theme.dart';
-
 enum _DividerKind { horizontal, vertical }
 
 @immutable

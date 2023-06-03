@@ -1,18 +1,15 @@
-import 'package:circular_countdown/circular_countdown.dart';
-import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
-import 'package:havayot/presentation/routes/quest/widget/countdown/ring_circular_countdown.dart';
 import 'package:havayot/presentation/routes/quest/widget/countdown/stroke_circular_countdown.dart';
-import 'package:havayot/presentation/widgets/hv_theme.dart';
+import 'package:havayot/presentation/utils/countdown.dart';
 
 class QuestClock extends StatelessWidget {
-  final int initialDuration;
-  final int duration;
+  final int initialValue;
+  final Countdown countDown;
   final VoidCallback onCountDownEnd;
 
   const QuestClock({
-    required this.initialDuration,
-    required this.duration,
+    required this.initialValue,
+    required this.countDown,
     required this.onCountDownEnd,
     super.key,
   });
@@ -20,9 +17,10 @@ class QuestClock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StrokeCircularCountDown(
-      initialDuration: initialDuration,
-      duration: duration,
+      initialDuration: initialValue,
+      duration: countDown.duration,
       onCountDownEnd: onCountDownEnd,
+      
     );
   }
 }
