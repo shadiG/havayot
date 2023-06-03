@@ -13,12 +13,11 @@ class QuestionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = HvTheme.of(context);
-    
+
     const clockSize = 50.0;
     return Builder(
       builder: (context) {
-        final countDownF =
-            context.select((QuestRouteCubit value) => value.state.countDownF);
+        final countDownF = context.select((QuestRouteCubit value) => value.state.countDownF);
         final selectedQuestionF =
             context.select((QuestRouteCubit value) => value.state.selectedQuestionF);
 
@@ -76,7 +75,7 @@ class QuestionCard extends StatelessWidget {
                         countDown: countDown,
                         initialValue: 0,
                         onCountDownEnd: () {
-                          context.read<QuestRouteCubit>().goToNextQuestion();
+                          context.read<QuestRouteCubit>().setSelectedChoice();
                         },
                       ),
                     ),

@@ -14,8 +14,6 @@ class _$QuestRouteModel extends QuestRouteModel {
   @override
   final Fetchable<Question> selectedQuestionF;
   @override
-  final Fetchable<Choice?> selectedChoiceF;
-  @override
   final Fetchable<int> currentQuestPositionF;
   @override
   final Fetchable<int> rightChoicesCountF;
@@ -27,7 +25,6 @@ class _$QuestRouteModel extends QuestRouteModel {
       {required this.questionsF,
       required this.countDownF,
       required this.selectedQuestionF,
-      required this.selectedChoiceF,
       required this.currentQuestPositionF,
       required this.rightChoicesCountF})
       : super._() {
@@ -37,8 +34,6 @@ class _$QuestRouteModel extends QuestRouteModel {
         countDownF, r'QuestRouteModel', 'countDownF');
     BuiltValueNullFieldError.checkNotNull(
         selectedQuestionF, r'QuestRouteModel', 'selectedQuestionF');
-    BuiltValueNullFieldError.checkNotNull(
-        selectedChoiceF, r'QuestRouteModel', 'selectedChoiceF');
     BuiltValueNullFieldError.checkNotNull(
         currentQuestPositionF, r'QuestRouteModel', 'currentQuestPositionF');
     BuiltValueNullFieldError.checkNotNull(
@@ -60,7 +55,6 @@ class _$QuestRouteModel extends QuestRouteModel {
         questionsF == other.questionsF &&
         countDownF == other.countDownF &&
         selectedQuestionF == other.selectedQuestionF &&
-        selectedChoiceF == other.selectedChoiceF &&
         currentQuestPositionF == other.currentQuestPositionF &&
         rightChoicesCountF == other.rightChoicesCountF;
   }
@@ -71,7 +65,6 @@ class _$QuestRouteModel extends QuestRouteModel {
     _$hash = $jc(_$hash, questionsF.hashCode);
     _$hash = $jc(_$hash, countDownF.hashCode);
     _$hash = $jc(_$hash, selectedQuestionF.hashCode);
-    _$hash = $jc(_$hash, selectedChoiceF.hashCode);
     _$hash = $jc(_$hash, currentQuestPositionF.hashCode);
     _$hash = $jc(_$hash, rightChoicesCountF.hashCode);
     _$hash = $jf(_$hash);
@@ -84,7 +77,6 @@ class _$QuestRouteModel extends QuestRouteModel {
           ..add('questionsF', questionsF)
           ..add('countDownF', countDownF)
           ..add('selectedQuestionF', selectedQuestionF)
-          ..add('selectedChoiceF', selectedChoiceF)
           ..add('currentQuestPositionF', currentQuestPositionF)
           ..add('rightChoicesCountF', rightChoicesCountF))
         .toString();
@@ -110,11 +102,6 @@ class QuestRouteModelBuilder
   set selectedQuestionF(Fetchable<Question>? selectedQuestionF) =>
       _$this._selectedQuestionF = selectedQuestionF;
 
-  Fetchable<Choice?>? _selectedChoiceF;
-  Fetchable<Choice?>? get selectedChoiceF => _$this._selectedChoiceF;
-  set selectedChoiceF(Fetchable<Choice?>? selectedChoiceF) =>
-      _$this._selectedChoiceF = selectedChoiceF;
-
   Fetchable<int>? _currentQuestPositionF;
   Fetchable<int>? get currentQuestPositionF => _$this._currentQuestPositionF;
   set currentQuestPositionF(Fetchable<int>? currentQuestPositionF) =>
@@ -133,7 +120,6 @@ class QuestRouteModelBuilder
       _questionsF = $v.questionsF;
       _countDownF = $v.countDownF;
       _selectedQuestionF = $v.selectedQuestionF;
-      _selectedChoiceF = $v.selectedChoiceF;
       _currentQuestPositionF = $v.currentQuestPositionF;
       _rightChoicesCountF = $v.rightChoicesCountF;
       _$v = null;
@@ -164,8 +150,6 @@ class QuestRouteModelBuilder
                 countDownF, r'QuestRouteModel', 'countDownF'),
             selectedQuestionF: BuiltValueNullFieldError.checkNotNull(
                 selectedQuestionF, r'QuestRouteModel', 'selectedQuestionF'),
-            selectedChoiceF: BuiltValueNullFieldError.checkNotNull(
-                selectedChoiceF, r'QuestRouteModel', 'selectedChoiceF'),
             currentQuestPositionF: BuiltValueNullFieldError.checkNotNull(
                 currentQuestPositionF,
                 r'QuestRouteModel',

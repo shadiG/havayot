@@ -94,7 +94,7 @@ class HavayotState extends State<Havayot> with WidgetsBindingObserver {
     return MaterialApp(
       navigatorKey: navigatorGlobalKey,
       onGenerateRoute: (settings) => onGenerateRoute(widget.appComponent, settings),
-      localizationsDelegates: [
+      localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

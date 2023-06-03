@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:havayot/presentation/routes/quest/widget/choice/choice_frame.dart';
+import 'package:havayot/data/models/choice.dart';
 import 'package:havayot/presentation/widgets/hv_theme.dart';
 import 'package:havayot/presentation/widgets/tappable.dart';
 
-class CardChoice extends ChoiceFrame {
+typedef OnQuestionTabTap = void Function(Choice);
+
+class CardChoice extends StatelessWidget {
+  final Choice choice;
+  final OnQuestionTabTap onTap;
+  final Color color;
+
   const CardChoice({
-    required super.choice,
-    required super.selectedChoice,
-    required super.onTap,
-    required super.color,
-    required super.letter,
+    required this.choice,
+    required this.onTap,
+    required this.color,
     super.key,
   });
 
@@ -24,10 +28,7 @@ class CardChoice extends ChoiceFrame {
         child: Container(
           width: 40,
           height: 40,
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(12)
-          ),
+          decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(12)),
           child: Center(
             child: Text(
               choice.value,

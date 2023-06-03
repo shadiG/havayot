@@ -11,10 +11,8 @@ double score(int rightChoiceCount, BuiltList<Question> questions) {
 
 
 extension ChoicesListExtension on BuiltList<Choice> {
-  BuiltList<Tuple3<Choice, String, Color>> mapLettersWithColors(
-      List<Tuple2<String, Color>> letters) {
-    assert(length == letters.length);
-    return mapIndexed((index, value) => Tuple3(value, letters[index].item1, letters[index].item2))
-        .toBuiltList();
+  BuiltList<Tuple2<Choice, Color>> mapColors(List<Color> colors) {
+    assert(length == colors.length);
+    return mapIndexed((index, value) => Tuple2(value, colors[index])).toBuiltList();
   }
 }

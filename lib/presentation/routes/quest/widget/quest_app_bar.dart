@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:havayot/presentation/routes/quest/quest_route_cubit.dart';
 import 'package:havayot/presentation/utils/app_localizations_extension.dart';
-import 'package:havayot/presentation/utils/choices_utils.dart';
 import 'package:havayot/presentation/utils/questions_utils.dart';
+import 'package:havayot/presentation/widgets/animated_progress_bar.dart';
 import 'package:havayot/presentation/widgets/hv_theme.dart';
-import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
 class QuestAppBar extends StatelessWidget {
   const QuestAppBar({Key? key}) : super(key: key);
@@ -18,7 +17,8 @@ class QuestAppBar extends StatelessWidget {
     return Builder(
       builder: (context) {
         final questionsF = context.select((QuestRouteCubit value) => value.state.questionsF);
-        final selectedQuestionF = context.select((QuestRouteCubit value) => value.state.selectedQuestionF);
+        final selectedQuestionF =
+            context.select((QuestRouteCubit value) => value.state.selectedQuestionF);
 
         final rightChoicesCountF =
             context.select((QuestRouteCubit value) => value.state.rightChoicesCountF);
@@ -30,26 +30,30 @@ class QuestAppBar extends StatelessWidget {
             final questions = data.item1;
             final selectedQuestion = data.item2;
             final rightChoicesCount = data.item3;
-            final progressBarRatio=  selectedQuestion.progression(questions);
+            final progressBarRatio = selectedQuestion.progression(questions);
 
             return Container(
               margin: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top),
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 children: [
-                  SimpleAnimationProgressBar(
-                    height: 10,
-                    width: MediaQuery.of(context).size.width - 110,
-                    backgroundColor: theme.grey,
-                    foregrondColor: theme.purple1,
-                    ratio:progressBarRatio,
-                    direction: Axis.horizontal,
-                    curve: Curves.fastLinearToSlowEaseIn,
-                    duration: const Duration(seconds: 3),
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: theme.shadow1,
+                  Expanded(
+                    child: AnimatedProgressBar(
+                      height: 10,
+                      width: MediaQuery.of(context).size.width - 110,
+                      backgroundColor: theme.grey,
+                      foregrondColor: theme.purple1,
+                      ratio: progressBarRatio,
+                      direction: Axis.horizontal,
+                      curve: Curves.fastLinearToSlowEaseIn,
+                      duration: const Duration(seconds: 3),
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: theme.shadow1,
+                    ),
                   ),
-                  const Spacer(),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
                   Card(
                     elevation: 4,
                     color: theme.white1,

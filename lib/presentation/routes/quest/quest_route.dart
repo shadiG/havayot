@@ -3,16 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:havayot/presentation/app_component.dart';
 import 'package:havayot/presentation/routes/quest/quest_route_cubit.dart';
-import 'package:havayot/presentation/routes/quest/widget/choice/card_choice.dart';
-import 'package:havayot/presentation/routes/quest/widget/grid_list_choices.dart';
+import 'package:havayot/presentation/routes/quest/widget/card_choice.dart';
 import 'package:havayot/presentation/routes/quest/widget/quest_app_bar.dart';
 import 'package:havayot/presentation/routes/quest/widget/question_card.dart';
 import 'package:havayot/presentation/utils/app_localizations_extension.dart';
 import 'package:havayot/presentation/utils/choices_utils.dart';
 import 'package:havayot/presentation/widgets/hv_divider.dart';
 import 'package:havayot/presentation/widgets/hv_theme.dart';
-import 'package:tuple/tuple.dart';
-import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
 class QuestRoute extends StatefulWidget {
   final AppComponent appComponent;
@@ -38,11 +35,11 @@ class _QuestRouteState extends State<QuestRoute> {
   Widget build(BuildContext context) {
     final theme = HvTheme.of(context);
 
-    final lettersWithColors = [
-      Tuple2('A', theme.gold),
-      Tuple2('B', theme.blue),
-      Tuple2('C', theme.red),
-      Tuple2('D', theme.purple),
+    final colors = [
+      theme.gold,
+      theme.blue,
+      theme.red,
+      theme.purple,
     ];
 
     return BlocProvider(
@@ -55,9 +52,6 @@ class _QuestRouteState extends State<QuestRoute> {
           builder: (context) {
             final selectedQuestionF =
                 context.select((QuestRouteCubit value) => value.state.selectedQuestionF);
-            final selectedChoiceF =
-                context.select((QuestRouteCubit value) => value.state.selectedChoiceF);
-
             return Stack(
               fit: StackFit.expand,
               children: [
@@ -78,25 +72,33 @@ class _QuestRouteState extends State<QuestRoute> {
                         ),
                         widgetForFetchable(
                           context: context,
-                          fetchable: combine2F(f1: selectedQuestionF, f2: selectedChoiceF),
-                          buildSuccess: (context, data) {
-                            final selectedQuestion = data.item1;
-                            final selectedChoice = data.item2;
+                          fetchable: selectedQuestionF,
+                          buildSuccess: (context, selectedQuestion) {
                             final children = selectedQuestion.choices
-                                .mapLettersWithColors(lettersWithColors)
+                                .mapColors(colors)
                                 .map(
-                                  (choiceWithLetterWithColor) => CardChoice(
-                                    choice: choiceWithLetterWithColor.item1,
-                                    letter: choiceWithLetterWithColor.item2,
-                                    color: choiceWithLetterWithColor.item3,
-                                    selectedChoice: selectedChoice,
+                                  (choiceWithColor) => CardChoice(
+                                    choice: choiceWithColor.item1,
+                                    color: choiceWithColor.item2,
                                     onTap: (choice) {
-                                      context.read<QuestRouteCubit>().setSelectedChoice(choice);
+                                      context.read<QuestRouteCubit>().setSelectedChoice(choice: choice);
                                     },
                                   ),
                                 )
                                 .toList();
-                            return GridListChoices(children: children);
+                            return GridView.count(
+                              crossAxisCount: 2,
+                              shrinkWrap: true,
+                              mainAxisSpacing: 20,
+                              crossAxisSpacing: 20,
+                              children: children
+                                ..map(
+                                  (e) => SizedBox(
+                                    width: (MediaQuery.of(context).size.width / 2 - 20),
+                                    child: e,
+                                  ),
+                                ),
+                            );
                           },
                           buildError: (context, e) => Text(
                             context.l10n().error__unexpected_error,
