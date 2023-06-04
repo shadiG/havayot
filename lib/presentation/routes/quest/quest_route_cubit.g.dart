@@ -17,6 +17,10 @@ class _$QuestRouteModel extends QuestRouteModel {
   final Fetchable<int> currentQuestPositionF;
   @override
   final Fetchable<int> rightChoicesCountF;
+  @override
+  final Progressable goToNextQuestionP;
+  @override
+  final Progressable automaticallyGoToNextQuestionP;
 
   factory _$QuestRouteModel([void Function(QuestRouteModelBuilder)? updates]) =>
       (new QuestRouteModelBuilder()..update(updates))._build();
@@ -26,7 +30,9 @@ class _$QuestRouteModel extends QuestRouteModel {
       required this.countDownF,
       required this.selectedQuestionF,
       required this.currentQuestPositionF,
-      required this.rightChoicesCountF})
+      required this.rightChoicesCountF,
+      required this.goToNextQuestionP,
+      required this.automaticallyGoToNextQuestionP})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         questionsF, r'QuestRouteModel', 'questionsF');
@@ -38,6 +44,10 @@ class _$QuestRouteModel extends QuestRouteModel {
         currentQuestPositionF, r'QuestRouteModel', 'currentQuestPositionF');
     BuiltValueNullFieldError.checkNotNull(
         rightChoicesCountF, r'QuestRouteModel', 'rightChoicesCountF');
+    BuiltValueNullFieldError.checkNotNull(
+        goToNextQuestionP, r'QuestRouteModel', 'goToNextQuestionP');
+    BuiltValueNullFieldError.checkNotNull(automaticallyGoToNextQuestionP,
+        r'QuestRouteModel', 'automaticallyGoToNextQuestionP');
   }
 
   @override
@@ -56,7 +66,9 @@ class _$QuestRouteModel extends QuestRouteModel {
         countDownF == other.countDownF &&
         selectedQuestionF == other.selectedQuestionF &&
         currentQuestPositionF == other.currentQuestPositionF &&
-        rightChoicesCountF == other.rightChoicesCountF;
+        rightChoicesCountF == other.rightChoicesCountF &&
+        goToNextQuestionP == other.goToNextQuestionP &&
+        automaticallyGoToNextQuestionP == other.automaticallyGoToNextQuestionP;
   }
 
   @override
@@ -67,6 +79,8 @@ class _$QuestRouteModel extends QuestRouteModel {
     _$hash = $jc(_$hash, selectedQuestionF.hashCode);
     _$hash = $jc(_$hash, currentQuestPositionF.hashCode);
     _$hash = $jc(_$hash, rightChoicesCountF.hashCode);
+    _$hash = $jc(_$hash, goToNextQuestionP.hashCode);
+    _$hash = $jc(_$hash, automaticallyGoToNextQuestionP.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -78,7 +92,10 @@ class _$QuestRouteModel extends QuestRouteModel {
           ..add('countDownF', countDownF)
           ..add('selectedQuestionF', selectedQuestionF)
           ..add('currentQuestPositionF', currentQuestPositionF)
-          ..add('rightChoicesCountF', rightChoicesCountF))
+          ..add('rightChoicesCountF', rightChoicesCountF)
+          ..add('goToNextQuestionP', goToNextQuestionP)
+          ..add(
+              'automaticallyGoToNextQuestionP', automaticallyGoToNextQuestionP))
         .toString();
   }
 }
@@ -112,6 +129,18 @@ class QuestRouteModelBuilder
   set rightChoicesCountF(Fetchable<int>? rightChoicesCountF) =>
       _$this._rightChoicesCountF = rightChoicesCountF;
 
+  Progressable? _goToNextQuestionP;
+  Progressable? get goToNextQuestionP => _$this._goToNextQuestionP;
+  set goToNextQuestionP(Progressable? goToNextQuestionP) =>
+      _$this._goToNextQuestionP = goToNextQuestionP;
+
+  Progressable? _automaticallyGoToNextQuestionP;
+  Progressable? get automaticallyGoToNextQuestionP =>
+      _$this._automaticallyGoToNextQuestionP;
+  set automaticallyGoToNextQuestionP(
+          Progressable? automaticallyGoToNextQuestionP) =>
+      _$this._automaticallyGoToNextQuestionP = automaticallyGoToNextQuestionP;
+
   QuestRouteModelBuilder();
 
   QuestRouteModelBuilder get _$this {
@@ -122,6 +151,8 @@ class QuestRouteModelBuilder
       _selectedQuestionF = $v.selectedQuestionF;
       _currentQuestPositionF = $v.currentQuestPositionF;
       _rightChoicesCountF = $v.rightChoicesCountF;
+      _goToNextQuestionP = $v.goToNextQuestionP;
+      _automaticallyGoToNextQuestionP = $v.automaticallyGoToNextQuestionP;
       _$v = null;
     }
     return this;
@@ -155,7 +186,13 @@ class QuestRouteModelBuilder
                 r'QuestRouteModel',
                 'currentQuestPositionF'),
             rightChoicesCountF: BuiltValueNullFieldError.checkNotNull(
-                rightChoicesCountF, r'QuestRouteModel', 'rightChoicesCountF'));
+                rightChoicesCountF, r'QuestRouteModel', 'rightChoicesCountF'),
+            goToNextQuestionP: BuiltValueNullFieldError.checkNotNull(
+                goToNextQuestionP, r'QuestRouteModel', 'goToNextQuestionP'),
+            automaticallyGoToNextQuestionP: BuiltValueNullFieldError.checkNotNull(
+                automaticallyGoToNextQuestionP,
+                r'QuestRouteModel',
+                'automaticallyGoToNextQuestionP'));
     replace(_$result);
     return _$result;
   }

@@ -21,6 +21,8 @@ class QuestRouteCubit extends HvCubit<QuestRouteModel> {
     ..selectedQuestionF = Fetchable.idle()
     ..currentQuestPositionF = Fetchable.idle()
     ..rightChoicesCountF = Fetchable.idle()
+    ..goToNextQuestionP = Progressable.idle()
+    ..automaticallyGoToNextQuestionP = Progressable.idle()
   )) {
     questCubit.startQuest();
     _initRightChoicesCount();
@@ -28,7 +30,28 @@ class QuestRouteCubit extends HvCubit<QuestRouteModel> {
     _initQuestions();
     _initSelectedQuestion();
     _initCurrentQuestPosition();
+    _initGoToNextQuestionP();
+    _initautomaticallyGoToNextQuestionP();
+  }
 
+  void _initautomaticallyGoToNextQuestionP() {
+    questCubit.stream
+        .startWith(questCubit.state)
+        .map((m) => m.automaticallyGoToNextQuestionP)
+        .distinct()
+        .presentP(this, (automaticallyGoToNextQuestionP) {
+      emit(state.rebuild((b) => b..automaticallyGoToNextQuestionP = automaticallyGoToNextQuestionP));
+    });
+  }
+
+  void _initGoToNextQuestionP() {
+    questCubit.stream
+        .startWith(questCubit.state)
+        .map((m) => m.goToNextQuestionP)
+        .distinct()
+        .presentP(this, (goToNextQuestionP) {
+      emit(state.rebuild((b) => b..goToNextQuestionP = goToNextQuestionP));
+    });
   }
 
   void _initRightChoicesCount() {
@@ -71,11 +94,11 @@ class QuestRouteCubit extends HvCubit<QuestRouteModel> {
     });
   }
 
-  void setSelectedChoice({Choice? choice}) {
-    if(choice!=null){
-      questCubit.setSelectedChoice(choice);
+  void setSelectedChoice({Choice? choice, required automatically}) {
+    if (choice != null) {
+      questCubit.setSelectedChoice(choice, false);
     }
-    questCubit.goToNextQuestion();
+    questCubit.goToNextQuestion(automatically: automatically);
   }
 
   void _initCurrentQuestPosition() {
@@ -100,6 +123,11 @@ abstract class QuestRouteModel implements Built<QuestRouteModel, QuestRouteModel
   Fetchable<int> get currentQuestPositionF;
   
   Fetchable<int> get rightChoicesCountF;
+  
+  Progressable get goToNextQuestionP;
+
+  Progressable get automaticallyGoToNextQuestionP;
+
 
   QuestRouteModel._();
 

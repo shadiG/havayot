@@ -29,6 +29,9 @@ dependencies:
   bot_toast: ^4.0.1
   circular_countdown: ^2.1.0
   intl: ^0.17.0
+  card_stack_widget: ^0.1.5
+  card_swiper: ^2.0.4
+  appinio_swiper: ^2.0.1
 
 dev_dependencies:
   built_value_generator: ^8.0.5

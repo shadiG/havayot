@@ -1,95 +1,232 @@
 import 'package:able/able.dart';
+import 'package:appinio_swiper/appinio_swiper.dart';
+import 'package:built_collection/built_collection.dart';
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:havayot/data/models/question.dart';
 import 'package:havayot/presentation/routes/quest/quest_route_cubit.dart';
 import 'package:havayot/presentation/routes/quest/widget/quest_clock.dart';
 import 'package:havayot/presentation/utils/app_localizations_extension.dart';
 import 'package:havayot/presentation/utils/color_utils.dart';
+import 'package:havayot/presentation/utils/list_utils.dart';
 import 'package:havayot/presentation/widgets/hv_theme.dart';
 
 class QuestionCard extends StatelessWidget {
-  const QuestionCard({super.key});
+  final GlobalKey cubitKey;
+
+  const QuestionCard({required this.cubitKey, super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = HvTheme.of(context);
-
     const clockSize = 50.0;
-    return Builder(
-      builder: (context) {
-        final countDownF = context.select((QuestRouteCubit value) => value.state.countDownF);
-        final selectedQuestionF =
-            context.select((QuestRouteCubit value) => value.state.selectedQuestionF);
+    return Stack(
+      alignment: Alignment.topCenter,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(top: clockSize),
+          child: Builder(
+            builder: (context) {
+              final questionsF = context.select((QuestRouteCubit value) => value.state.questionsF);
 
-        return widgetForFetchable(
-          context: context,
-          fetchable: combine2F(f1: countDownF, f2: selectedQuestionF),
-          buildSuccess: (context, data) {
-            final countDown = data.item1;
-            final selectedQuestion = data.item2;
-
-            final cardColor = theme.green.darken();
-            return Stack(
-              alignment: Alignment.topCenter,
-              children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.only(top: clockSize),
-                  width: double.infinity,
-                  child: Card(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+              return widgetForFetchable(
+                context: context,
+                fetchable: questionsF,
+                buildSuccess: (context, questions) {
+                  return SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 200,
+                    child: QuestionsList(
+                      questions: questions,
+                      clockSize: clockSize,
+                      cubitKey: cubitKey,
                     ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: cardColor,
-                      ),
-                      padding: const EdgeInsets.only(
-                        top: clockSize + 20.0,
-                        bottom: 30,
-                        left: 10,
-                        right: 10,
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            selectedQuestion.value,
-                            style: theme.h1,
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  );
+                },
+                buildError: (context, e) => Text(
+                  context.l10n().error__unexpected_error,
+                  style: theme.thin1,
                 ),
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Material(
-                    shape: const CircleBorder(side: BorderSide.none),
-                    elevation: 8,
-                    child: CircleAvatar(
+              );
+            },
+          ),
+        ),
+        Align(
+          alignment: Alignment.topCenter,
+          child: Material(
+            shape: const CircleBorder(side: BorderSide.none),
+            elevation: 8,
+            child: Builder(
+              builder: (context) {
+                final countDownF =
+                    context.select((QuestRouteCubit value) => value.state.countDownF);
+                return widgetForFetchable(
+                  context: context,
+                  fetchable: countDownF,
+                  buildSuccess: (context, countDown) {
+                    return CircleAvatar(
                       radius: clockSize,
                       backgroundColor: theme.green,
                       child: QuestClock(
                         countDown: countDown,
                         initialValue: 0,
                         onCountDownEnd: () {
-                          context.read<QuestRouteCubit>().setSelectedChoice();
+                          context.read<QuestRouteCubit>().setSelectedChoice(automatically: true);
                         },
                       ),
-                    ),
+                    );
+                  },
+                  buildError: (context, e) => Text(
+                    context.l10n().error__unexpected_error,
+                    style: theme.thin1,
                   ),
-                ),
-              ],
-            );
-          },
-          buildError: (context, e) => Text(
-            context.l10n().error__unexpected_error,
-            style: theme.thin1,
+                );
+              },
+            ),
           ),
-        );
-      },
+        ),
+      ],
+    );
+  }
+}
+
+class QuestionsList extends StatefulWidget {
+  final GlobalKey cubitKey;
+  final BuiltList<Question> questions;
+  final double clockSize;
+
+  const QuestionsList({
+    super.key,
+    required this.cubitKey,
+    required this.questions,
+    required this.clockSize,
+  });
+
+  @override
+  State<QuestionsList> createState() => _QuestionsListState();
+}
+
+class _QuestionsListState extends State<QuestionsList> {
+  late final AppinioSwiperController controller;
+  final swiperKey = UniqueKey();
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AppinioSwiperController();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = HvTheme.of(context);
+
+    final gradients = [
+      theme.gold,
+      theme.blue,
+      theme.red,
+      theme.purple,
+    ].alternate(widget.questions.length).map((e) => e.toLinearGradient()).toList();
+
+    return Builder(builder: (context) {
+      final selectedQuestionF =
+          context.select((QuestRouteCubit value) => value.state.selectedQuestionF);
+      return widgetForFetchable(
+        context: context,
+        fetchable: selectedQuestionF,
+        buildSuccess: (context, selectedQuestion) {
+          return ProgressablesResultPresenter<QuestRouteCubit, QuestRouteModel>(
+            presenters: [
+              ProgressableResultPresenter(
+                progressable: (m) => m.automaticallyGoToNextQuestionP,
+                onSuccess: () {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    controller.swipeRight();
+                  });
+                },
+              ),  
+            ],
+            child: AppinioSwiper(
+              key: swiperKey,
+              controller: controller,
+              cardsCount: widget.questions.length,
+              allowUnswipe: false,
+              padding: EdgeInsets.zero,
+              swipeOptions: AppinioSwipeOptions.horizontal,
+              onSwipe: (index, __) {
+                swipe(index, selectedQuestion);
+              },
+              onSwiping: (AppinioSwiperDirection direction) {
+                debugPrint(direction.toString());
+              },
+              cardsBuilder: (BuildContext context, int index) {
+                final gradient = gradients[index];
+                final question = widget.questions[index];
+
+                return _CardView(
+                  key: Key('question_card_${question.hashCode}'),
+                  question: question,
+                  gradient: gradient,
+                  paddingTop: widget.clockSize,
+                );
+              },
+            ),
+          );
+        },
+        buildError: (context, e) => Text(
+          context.l10n().error__unexpected_error,
+          style: theme.thin1,
+        ),
+      );
+    });
+  }
+
+  void swipe(int index, Question selectedQuestion) {
+    final displayedQuestion = widget.questions[index];
+    if (selectedQuestion != displayedQuestion) {
+      context.read<QuestRouteCubit>().setSelectedChoice(automatically: false);
+    }
+  }
+}
+
+class _CardView extends StatelessWidget {
+  final Question question;
+  final Color? color;
+  final Gradient? gradient;
+  final double paddingTop;
+
+  const _CardView(
+      {required this.question, this.color, this.gradient, required this.paddingTop, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = HvTheme.of(context);
+
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.only(top: paddingTop + 30, bottom: 8, left: 10, right: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: color,
+          gradient: gradient,
+        ),
+        child: Text(
+          question.value,
+          style: theme.h1,
+          textAlign: TextAlign.center,
+        ),
+      ),
     );
   }
 }

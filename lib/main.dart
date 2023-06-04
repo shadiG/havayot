@@ -26,7 +26,7 @@ void main() async {
 
     FlutterError.onError = (details) {
       if (kDebugMode) {
-        print('error caught by FlutterError.onError');
+        print('error caught by FlutterError.onError $details');
       }
     };
 

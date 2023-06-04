@@ -26,6 +26,8 @@ class QuestCubit extends HvCubit<QuestModel> {
           ..selectedChoiceF = Fetchable.idle()
           ..currentQuestPositionF = Fetchable.idle()
           ..rightChoicesCountF = Fetchable.idle()
+          ..goToNextQuestionP = Progressable.idle()
+          ..automaticallyGoToNextQuestionP = Progressable.idle()
   )) {
     emit(state.rebuild((b) => b..questDurationF = Fetchable.success(10)));
     fetchQuestions();
@@ -63,11 +65,12 @@ class QuestCubit extends HvCubit<QuestModel> {
     }).presentP(this, (startQuestP) {});
   }
 
-  void setSelectedChoice(Choice choice) {
+  void setSelectedChoice(Choice choice, bool isAutomaticSwipe) {
     emit(state.rebuild((b) => b..selectedChoiceF = Fetchable.success(choice)));
   }
+ 
 
-  void goToNextQuestion() {
+  void goToNextQuestion({bool automatically = false}) {
     combine4FStreams(
       s1: stream
           .startWith(state)
@@ -109,15 +112,25 @@ class QuestCubit extends HvCubit<QuestModel> {
         final currentRightChoiceCount = selectedQuestion.answer == selectedChoice?.value
             ? rightChoicesCount + 1
             : rightChoicesCount;
+        final currentQuestPosition = questions.indexWhere((q) => q == nextQuestion);
         emit(state.rebuild((b) => b
           ..selectedQuestionF = Fetchable.success(nextQuestion)
           ..selectedChoiceF = Fetchable.success(null)
           ..currentQuestPositionF =
-              Fetchable.success(questions.indexWhere((q) => q == nextQuestion))
+              Fetchable.success(currentQuestPosition)
           ..rightChoicesCountF = Fetchable.success(currentRightChoiceCount)));
         _resetQuestCountDown();
       });
-    }).presentP(this, (goToNextQuestionP) {});
+    })
+        .distinct()
+        .takeWhileInclusive((m) => !m.success)
+        .presentP(this, (goToNextQuestionP) {
+          if(automatically){
+            emit(state.rebuild((b) => b..automaticallyGoToNextQuestionP = goToNextQuestionP));
+          }else{
+            emit(state.rebuild((b) => b..goToNextQuestionP = goToNextQuestionP));
+          }
+    });
   }
 
   void _resetQuestCountDown() {
@@ -158,6 +171,11 @@ abstract class QuestModel implements Built<QuestModel, QuestModelBuilder> {
   Fetchable<int> get rightChoicesCountF;
 
   Fetchable<int> get questDurationF;
+
+  Progressable get goToNextQuestionP;
+
+  Progressable get automaticallyGoToNextQuestionP;
+  
 
   QuestModel._();
 

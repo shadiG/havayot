@@ -12,7 +12,7 @@ extension ColorBrightness on Color {
       begin: begin,
       end: end,
       tileMode: TileMode.mirror,
-      colors: [this, random()],
+      colors: [this, darken()],
     );
   }
   Color random() {
