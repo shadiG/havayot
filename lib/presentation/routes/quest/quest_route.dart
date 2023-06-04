@@ -52,13 +52,23 @@ class _QuestRouteState extends State<QuestRoute> {
                 ),
                 Center(
                   child: Container(
-                    padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
+                    padding: EdgeInsets.only(
+                        left: 20,
+                        right: 20,
+                        top: MediaQuery.of(context).viewPadding.top + 60.0,
+                        bottom: 40),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        QuestionCard(
-                          cubitKey: _cubitKey,
+                        Expanded(
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              return  QuestionCard(
+                                  cubitKey: _cubitKey,
+                              );
+                            },
+                          ),
                         ),
                         const SizedBox(
                           height: 30,

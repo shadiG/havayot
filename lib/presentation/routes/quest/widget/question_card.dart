@@ -1,7 +1,6 @@
 import 'package:able/able.dart';
 import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:built_collection/built_collection.dart';
-import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:havayot/data/models/question.dart';
@@ -21,22 +20,20 @@ class QuestionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = HvTheme.of(context);
     const clockSize = 50.0;
-    return Stack(
-      alignment: Alignment.topCenter,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(top: clockSize),
-          child: Builder(
-            builder: (context) {
-              final questionsF = context.select((QuestRouteCubit value) => value.state.questionsF);
+    return Builder(
+      builder: (context) {
+        final questionsF = context.select((QuestRouteCubit value) => value.state.questionsF);
 
-              return widgetForFetchable(
+        return Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: clockSize),
+              child: widgetForFetchable(
                 context: context,
                 fetchable: questionsF,
                 buildSuccess: (context, questions) {
                   return SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    height: 200,
                     child: QuestionsList(
                       questions: questions,
                       clockSize: clockSize,
@@ -48,45 +45,47 @@ class QuestionCard extends StatelessWidget {
                   context.l10n().error__unexpected_error,
                   style: theme.thin1,
                 ),
-              );
-            },
-          ),
-        ),
-        Align(
-          alignment: Alignment.topCenter,
-          child: Material(
-            shape: const CircleBorder(side: BorderSide.none),
-            elevation: 8,
-            child: Builder(
-              builder: (context) {
-                final countDownF =
-                    context.select((QuestRouteCubit value) => value.state.countDownF);
-                return widgetForFetchable(
-                  context: context,
-                  fetchable: countDownF,
-                  buildSuccess: (context, countDown) {
-                    return CircleAvatar(
-                      radius: clockSize,
-                      backgroundColor: theme.green,
-                      child: QuestClock(
-                        countDown: countDown,
-                        initialValue: 0,
-                        onCountDownEnd: () {
-                          context.read<QuestRouteCubit>().setSelectedChoice(automatically: true);
-                        },
+              ),
+            ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Material(
+                shape: const CircleBorder(side: BorderSide.none),
+                elevation: 8,
+                child: Builder(
+                  builder: (context) {
+                    final countDownF =
+                        context.select((QuestRouteCubit value) => value.state.countDownF);
+                    return widgetForFetchable(
+                      context: context,
+                      fetchable: countDownF,
+                      buildSuccess: (context, countDown) {
+                        return CircleAvatar(
+                          radius: clockSize,
+                          backgroundColor: theme.green,
+                          child: QuestClock(
+                            countDown: countDown,
+                            initialValue: 0,
+                            onCountDownEnd: () {
+                              context
+                                  .read<QuestRouteCubit>()
+                                  .setSelectedChoice(automatically: true);
+                            },
+                          ),
+                        );
+                      },
+                      buildError: (context, e) => Text(
+                        context.l10n().error__unexpected_error,
+                        style: theme.thin1,
                       ),
                     );
                   },
-                  buildError: (context, e) => Text(
-                    context.l10n().error__unexpected_error,
-                    style: theme.thin1,
-                  ),
-                );
-              },
+                ),
+              ),
             ),
-          ),
-        ),
-      ],
+          ],
+        );
+      },
     );
   }
 }
@@ -150,13 +149,14 @@ class _QuestionsListState extends State<QuestionsList> {
                     controller.swipeRight();
                   });
                 },
-              ),  
+              ),
             ],
             child: AppinioSwiper(
               key: swiperKey,
               controller: controller,
               cardsCount: widget.questions.length,
               allowUnswipe: false,
+              maxAngle: 50,
               padding: EdgeInsets.zero,
               swipeOptions: AppinioSwipeOptions.horizontal,
               onSwipe: (index, __) {
@@ -188,9 +188,11 @@ class _QuestionsListState extends State<QuestionsList> {
   }
 
   void swipe(int index, Question selectedQuestion) {
-    final displayedQuestion = widget.questions[index];
-    if (selectedQuestion != displayedQuestion) {
-      context.read<QuestRouteCubit>().setSelectedChoice(automatically: false);
+    if (index < widget.questions.length) {
+      final displayedQuestion = widget.questions[index];
+      if (selectedQuestion != displayedQuestion) {
+        context.read<QuestRouteCubit>().setSelectedChoice(automatically: false);
+      }
     }
   }
 }
@@ -208,23 +210,29 @@ class _CardView extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = HvTheme.of(context);
 
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
+    return SingleChildScrollView(
       child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.only(top: paddingTop + 30, bottom: 8, left: 10, right: 10),
+        padding: EdgeInsets.only(top: paddingTop + 20, bottom: 0, left: 10, right: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: color,
           gradient: gradient,
         ),
-        child: Text(
-          question.value,
-          style: theme.h1,
-          textAlign: TextAlign.center,
+        child: IntrinsicHeight(
+          child: Column(
+            children: [
+              Expanded(
+                child: Text(
+                  question.value,
+                  style: theme.h1,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+            ],
+          ),
         ),
       ),
     );

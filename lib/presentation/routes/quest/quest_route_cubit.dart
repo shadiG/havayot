@@ -98,7 +98,7 @@ class QuestRouteCubit extends HvCubit<QuestRouteModel> {
     if (choice != null) {
       questCubit.setSelectedChoice(choice, false);
     }
-    questCubit.goToNextQuestion(automatically: automatically);
+    //questCubit.goToNextQuestion(automatically: automatically);
   }
 
   void _initCurrentQuestPosition() {

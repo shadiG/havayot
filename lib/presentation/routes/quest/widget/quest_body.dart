@@ -31,21 +31,26 @@ class QuestBody extends StatelessWidget {
             return GridView.count(
               crossAxisCount: 2,
               shrinkWrap: true,
-              mainAxisSpacing: 20,
+              childAspectRatio: 1.4,
+              mainAxisSpacing: 10,
               crossAxisSpacing: 20,
               children: [
                 ...selectedQuestion.choices.mapColors(colors).map(
-                      (choiceWithColor) => SizedBox(
-                        width: (MediaQuery.of(context).size.width / 2 - 20),
-                        child: CardChoice(
-                          choice: choiceWithColor.item1,
-                          color: choiceWithColor.item2,
-                          onTap: (choice) {
-                            context.read<QuestRouteCubit>().setSelectedChoice(choice: choice, automatically: true);
-                          },
-                        ),
+                  (choiceWithColor) {
+                    return SizedBox(
+                      width: (MediaQuery.of(context).size.width / 2 - 20),
+                      child: CardChoice(
+                        choice: choiceWithColor.item1,
+                        color: choiceWithColor.item2,
+                        onTap: (choice) {
+                          context
+                              .read<QuestRouteCubit>()
+                              .setSelectedChoice(choice: choice, automatically: true);
+                        },
                       ),
-                    ),
+                    );
+                  },
+                ),
               ],
             );
           },
