@@ -68,7 +68,7 @@ class QuestCubit extends HvCubit<QuestModel> {
   void setSelectedChoice(Choice choice, bool isAutomaticSwipe) {
     emit(state.rebuild((b) => b..selectedChoiceF = Fetchable.success(choice)));
   }
- 
+
 
   void goToNextQuestion({bool automatically = false}) {
     combine4FStreams(
@@ -96,41 +96,44 @@ class QuestCubit extends HvCubit<QuestModel> {
         .distinct()
         .takeWhileInclusive((m) => !m.success)
         .flatMapOnSuccessFToProgressable((data) {
-      final questions = data.item1;
-      final selectedQuestion = data.item2;
-      final rightChoicesCount = data.item3;
-      final selectedChoice = data.item4;
+          final questions = data.item1;
+          final selectedQuestion = data.item2;
+          final rightChoicesCount = data.item3;
+          final selectedChoice = data.item4;
 
-      return futureAsProgressable(() async {
-        final nextQuestion = () {
-          final currentQuestionIndex =
-              questions.indexWhere((question) => question == selectedQuestion);
-          return ((currentQuestionIndex + 1) < questions.length)
-              ? questions[currentQuestionIndex + 1]
-              : questions.first;
-        }();
-        final currentRightChoiceCount = selectedQuestion.answer == selectedChoice?.value
-            ? rightChoicesCount + 1
-            : rightChoicesCount;
-        final currentQuestPosition = questions.indexWhere((q) => q == nextQuestion);
-        emit(state.rebuild((b) => b
-          ..selectedQuestionF = Fetchable.success(nextQuestion)
-          ..selectedChoiceF = Fetchable.success(null)
-          ..currentQuestPositionF =
-              Fetchable.success(currentQuestPosition)
-          ..rightChoicesCountF = Fetchable.success(currentRightChoiceCount)));
-        _resetQuestCountDown();
-      });
-    })
+          return futureAsProgressable(() async {
+            final nextQuestion = () {
+              final currentQuestionIndex =
+                  questions.indexWhere((question) => question == selectedQuestion);
+              return ((currentQuestionIndex + 1) < questions.length)
+                  ? questions[currentQuestionIndex + 1]
+                  : null;
+            }();
+            if (nextQuestion == null) {
+              navigationCubit.toQuestResult();
+              return;
+            }
+            final currentRightChoiceCount = selectedQuestion.answer == selectedChoice?.value
+                ? rightChoicesCount + 1
+                : rightChoicesCount;
+            final currentQuestPosition = questions.indexWhere((q) => q == nextQuestion);
+            emit(state.rebuild((b) => b
+              ..selectedQuestionF = Fetchable.success(nextQuestion)
+              ..selectedChoiceF = Fetchable.success(null)
+              ..currentQuestPositionF = Fetchable.success(currentQuestPosition)
+              ..rightChoicesCountF = Fetchable.success(currentRightChoiceCount)));
+            _resetQuestCountDown();
+          });
+        })
         .distinct()
         .takeWhileInclusive((m) => !m.success)
         .presentP(this, (goToNextQuestionP) {
-          if(automatically){
+          if (automatically) {
             emit(state.rebuild((b) => b..automaticallyGoToNextQuestionP = goToNextQuestionP));
-          }else{
+          } else {
             emit(state.rebuild((b) => b..goToNextQuestionP = goToNextQuestionP));
           }
-    });
+        });
   }
 
   void _resetQuestCountDown() {

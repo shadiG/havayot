@@ -162,9 +162,6 @@ class _QuestionsListState extends State<QuestionsList> {
               onSwipe: (index, __) {
                 swipe(index, selectedQuestion);
               },
-              onSwiping: (AppinioSwiperDirection direction) {
-                debugPrint(direction.toString());
-              },
               cardsBuilder: (BuildContext context, int index) {
                 final gradient = gradients[index];
                 final question = widget.questions[index];

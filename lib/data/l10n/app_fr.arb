@@ -1,5 +1,10 @@
 {
   "error__unexpected_error": "Erreur du système. Veuillez réessayer plus tard.",
   
-  "quest_screen__bottom_title": "Veuillez choisir une seule réponse"
+  "quest_screen__bottom_title": "Veuillez choisir une seule réponse",
+  
+  "quest_result_screen__title": "Voici vos résultats",
+  "quest_result_screen__score": "Votre score final est ",
+  "quest_result_screen__correct_answers": "Bonnes réponses"
+
 }

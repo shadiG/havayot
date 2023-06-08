@@ -5,6 +5,7 @@ import 'package:havayot/presentation/routes/quest/quest_route_cubit.dart';
 import 'package:havayot/presentation/utils/app_localizations_extension.dart';
 import 'package:havayot/presentation/utils/choices_utils.dart';
 import 'package:havayot/presentation/widgets/hv_theme.dart';
+import 'package:vector_math/vector_math.dart' as math;
 
 import 'card_choice.dart';
 

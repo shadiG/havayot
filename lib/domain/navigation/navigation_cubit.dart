@@ -9,6 +9,8 @@ part 'navigation_cubit.g.dart';
 
 class Routes {
   static const String quest = 'quest';
+  static const String questResult = 'quest-result';
+
 }
 
 class NavigationCubit extends HvCubit<NavigationModel> {
@@ -19,6 +21,7 @@ class NavigationCubit extends HvCubit<NavigationModel> {
 
   void pop([dynamic data]) => _navigator.pop(data);
   void toQuest()  => pushAndClearHistory(Routes.quest);
+  void toQuestResult() => push(Routes.questResult);
   
   Future<T?> push<T extends Object?>(String routeName, [Object? arguments]) async {
     await HavayotState.appInitialization;

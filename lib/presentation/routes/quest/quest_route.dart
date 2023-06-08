@@ -8,10 +8,6 @@ import 'package:havayot/presentation/routes/quest/widget/quest_app_bar.dart';
 import 'package:havayot/presentation/routes/quest/widget/quest_body.dart';
 import 'package:havayot/presentation/routes/quest/widget/quest_bottom_bar.dart';
 import 'package:havayot/presentation/routes/quest/widget/question_card.dart';
-import 'package:havayot/presentation/utils/app_localizations_extension.dart';
-import 'package:havayot/presentation/utils/choices_utils.dart';
-import 'package:havayot/presentation/widgets/hv_divider.dart';
-import 'package:havayot/presentation/widgets/hv_theme.dart';
 
 class QuestRoute extends StatefulWidget {
   final AppComponent appComponent;
