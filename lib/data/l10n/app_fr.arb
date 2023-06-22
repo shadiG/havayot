@@ -5,6 +5,7 @@
   
   "quest_result_screen__title": "Voici vos résultats",
   "quest_result_screen__score": "Votre score final est ",
-  "quest_result_screen__correct_answers": "Bonnes réponses"
+  "quest_result_screen__correct_answers": "Bonnes réponses",
+  "quest_result_screen__try_again": "Réessayer"
 
 }

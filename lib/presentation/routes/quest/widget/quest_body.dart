@@ -5,13 +5,18 @@ import 'package:havayot/presentation/routes/quest/quest_route_cubit.dart';
 import 'package:havayot/presentation/utils/app_localizations_extension.dart';
 import 'package:havayot/presentation/utils/choices_utils.dart';
 import 'package:havayot/presentation/widgets/hv_theme.dart';
-import 'package:vector_math/vector_math.dart' as math;
 
 import 'card_choice.dart';
 
-class QuestBody extends StatelessWidget {
-  const QuestBody({Key? key}) : super(key: key);
+class QuestBody extends StatefulWidget {
+  final GlobalKey cubitKey;
+  const QuestBody({required this.cubitKey, super.key});
 
+  @override
+  State<QuestBody> createState() => _QuestBodyState();
+}
+
+class _QuestBodyState extends State<QuestBody> {
   @override
   Widget build(BuildContext context) {
     final theme = HvTheme.of(context);
@@ -23,8 +28,8 @@ class QuestBody extends StatelessWidget {
     ];
     return Builder(
       builder: (context) {
-        final selectedQuestionF =
-            context.select((QuestRouteCubit value) => value.state.selectedQuestionF);
+        final selectedQuestionF = context.select((QuestRouteCubit value) => value.state.selectedQuestionF);
+
         return widgetForFetchable(
           context: context,
           fetchable: selectedQuestionF,
@@ -41,10 +46,10 @@ class QuestBody extends StatelessWidget {
                     return SizedBox(
                       width: (MediaQuery.of(context).size.width / 2 - 20),
                       child: CardChoice(
-                        choice: choiceWithColor.item1,
-                        color: choiceWithColor.item2,
+                        choice: choiceWithColor.$1,
+                        color: choiceWithColor.$2,
                         onTap: (choice) {
-                          context
+                          widget.cubitKey.currentContext!
                               .read<QuestRouteCubit>()
                               .setSelectedChoice(choice: choice, automatically: true);
                         },

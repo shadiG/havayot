@@ -1,4 +1,5 @@
 import 'package:havayot/data/repositories/quest_repository.dart';
+import 'package:havayot/data/services/api/hv_api.dart';
 import 'package:havayot/domain/navigation/navigation_cubit.dart';
 import 'package:havayot/domain/quest/quest_cubit.dart';
 import 'package:havayot/domain/user/user_cubit.dart';
@@ -22,9 +23,10 @@ Future<AppComponent> createAppComponent() async {
   // user cubit
   final userCubit = UserCubit(navigationCubit: navigationCubit);
 
+  //quest api
+  final HvApi api = HvApi.create();
   //quest repository
-  // TODO : for now, we fetch the questions from local
-  final questRepository = LocalQuestRepository();
+  final questRepository = CloudQuestRepository(api: api);
 
   //quest cubit
   final questCubit = QuestCubit(navigationCubit: navigationCubit, questRepository: questRepository);

@@ -23,7 +23,6 @@ class QuestionCard extends StatelessWidget {
     return Builder(
       builder: (context) {
         final questionsF = context.select((QuestRouteCubit value) => value.state.questionsF);
-
         return Stack(
           children: [
             Padding(
@@ -54,8 +53,7 @@ class QuestionCard extends StatelessWidget {
                 elevation: 8,
                 child: Builder(
                   builder: (context) {
-                    final countDownF =
-                        context.select((QuestRouteCubit value) => value.state.countDownF);
+                    final countDownF = context.select((QuestRouteCubit value) => value.state.countDownF);
                     return widgetForFetchable(
                       context: context,
                       fetchable: countDownF,
@@ -65,11 +63,9 @@ class QuestionCard extends StatelessWidget {
                           backgroundColor: theme.green,
                           child: QuestClock(
                             countDown: countDown,
-                            initialValue: 0,
+                            initialValue: countDown.duration,
                             onCountDownEnd: () {
-                              context
-                                  .read<QuestRouteCubit>()
-                                  .setSelectedChoice(automatically: true);
+                              context.read<QuestRouteCubit>().setSelectedChoice(automatically: true);
                             },
                           ),
                         );
@@ -134,8 +130,7 @@ class _QuestionsListState extends State<QuestionsList> {
     ].alternate(widget.questions.length).map((e) => e.toLinearGradient()).toList();
 
     return Builder(builder: (context) {
-      final selectedQuestionF =
-          context.select((QuestRouteCubit value) => value.state.selectedQuestionF);
+      final selectedQuestionF = context.select((QuestRouteCubit value) => value.state.selectedQuestionF);
       return widgetForFetchable(
         context: context,
         fetchable: selectedQuestionF,
@@ -196,12 +191,10 @@ class _QuestionsListState extends State<QuestionsList> {
 
 class _CardView extends StatelessWidget {
   final Question question;
-  final Color? color;
   final Gradient? gradient;
   final double paddingTop;
 
-  const _CardView(
-      {required this.question, this.color, this.gradient, required this.paddingTop, super.key});
+  const _CardView({required this.question, this.gradient, required this.paddingTop, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -212,7 +205,6 @@ class _CardView extends StatelessWidget {
         padding: EdgeInsets.only(top: paddingTop + 20, bottom: 0, left: 10, right: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: color,
           gradient: gradient,
         ),
         child: IntrinsicHeight(

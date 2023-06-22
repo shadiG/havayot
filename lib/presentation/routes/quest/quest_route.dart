@@ -1,9 +1,7 @@
-import 'package:able/able.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:havayot/presentation/app_component.dart';
 import 'package:havayot/presentation/routes/quest/quest_route_cubit.dart';
-import 'package:havayot/presentation/routes/quest/widget/card_choice.dart';
 import 'package:havayot/presentation/routes/quest/widget/quest_app_bar.dart';
 import 'package:havayot/presentation/routes/quest/widget/quest_body.dart';
 import 'package:havayot/presentation/routes/quest/widget/quest_bottom_bar.dart';
@@ -49,19 +47,16 @@ class _QuestRouteState extends State<QuestRoute> {
                 Center(
                   child: Container(
                     padding: EdgeInsets.only(
-                        left: 20,
-                        right: 20,
-                        top: MediaQuery.of(context).viewPadding.top + 60.0,
-                        bottom: 40),
+                        left: 20, right: 20, top: MediaQuery.of(context).viewPadding.top + 60.0, bottom: 40),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
-                          child: LayoutBuilder(
-                            builder: (context, constraints) {
-                              return  QuestionCard(
-                                  cubitKey: _cubitKey,
+                          child: Builder(
+                            builder: (context) {
+                              return QuestionCard(
+                                cubitKey: _cubitKey,
                               );
                             },
                           ),
@@ -69,7 +64,11 @@ class _QuestRouteState extends State<QuestRoute> {
                         const SizedBox(
                           height: 30,
                         ),
-                        const QuestBody(),
+                        Builder(
+                          builder: (context) {
+                            return QuestBody(cubitKey: _cubitKey);
+                          },
+                        ),
                         const SizedBox(
                           height: 30,
                         ),

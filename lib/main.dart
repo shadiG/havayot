@@ -21,8 +21,7 @@ void main() async {
   }
 
   runZonedGuarded<Future<void>>(() async {
-    WidgetsBinding widgetsBinding = WidgetsFlutterBinding
-        .ensureInitialized(); // should be called inside runZonedGuarded for error handling to work
+    WidgetsFlutterBinding.ensureInitialized(); // should be called inside runZonedGuarded for error handling to work
 
     FlutterError.onError = (details) {
       if (kDebugMode) {
@@ -68,7 +67,6 @@ class HavayotState extends State<Havayot> with WidgetsBindingObserver {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _appInitializationCompleter.complete();
-      // FlutterNativeSplash.remove(); // remove splash screen after initialization completed
     });
 
     WidgetsBinding.instance.addObserver(this);
@@ -106,13 +104,14 @@ class HavayotState extends State<Havayot> with WidgetsBindingObserver {
         final materialTheme = ThemeData(
           primaryColor: theme.primary,
           scaffoldBackgroundColor: theme.primary,
-          typography: Typography.material2018(platform: defaultTargetPlatform),
+          typography: Typography.material2021(platform: defaultTargetPlatform),
           visualDensity: VisualDensity.adaptivePlatformDensity,
-          //fontFamily: themeData.defaultFontFamily,
         );
         return materialTheme.copyWith(
-          colorScheme: materialTheme.colorScheme
-              .copyWith(primary: theme.primary, secondary: theme.primary.withOpacity(0.1)),
+          colorScheme: materialTheme.colorScheme.copyWith(
+            primary: theme.primary,
+            secondary: theme.primary.withOpacity(0.1),
+          ),
           iconTheme: IconThemeData(
             color: theme.white1,
           ),

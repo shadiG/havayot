@@ -39,7 +39,7 @@ class _$QuestModelSerializer implements StructuredSerializer<QuestModel> {
       'selectedChoiceF',
       serializers.serialize(object.selectedChoiceF,
           specifiedType: const FullType(
-              Fetchable, const [const FullType.nullable(Choice)])),
+              Fetchable, const [const FullType.nullable(String)])),
       'currentQuestPositionF',
       serializers.serialize(object.currentQuestPositionF,
           specifiedType:
@@ -57,6 +57,9 @@ class _$QuestModelSerializer implements StructuredSerializer<QuestModel> {
           specifiedType: const FullType(Progressable)),
       'automaticallyGoToNextQuestionP',
       serializers.serialize(object.automaticallyGoToNextQuestionP,
+          specifiedType: const FullType(Progressable)),
+      'startQuestP',
+      serializers.serialize(object.startQuestP,
           specifiedType: const FullType(Progressable)),
     ];
 
@@ -101,8 +104,8 @@ class _$QuestModelSerializer implements StructuredSerializer<QuestModel> {
         case 'selectedChoiceF':
           result.selectedChoiceF = serializers.deserialize(value,
                   specifiedType: const FullType(
-                      Fetchable, const [const FullType.nullable(Choice)]))!
-              as Fetchable<Choice?>;
+                      Fetchable, const [const FullType.nullable(String)]))!
+              as Fetchable<String?>;
           break;
         case 'currentQuestPositionF':
           result.currentQuestPositionF = serializers.deserialize(value,
@@ -130,6 +133,10 @@ class _$QuestModelSerializer implements StructuredSerializer<QuestModel> {
           result.automaticallyGoToNextQuestionP = serializers.deserialize(value,
               specifiedType: const FullType(Progressable))! as Progressable;
           break;
+        case 'startQuestP':
+          result.startQuestP = serializers.deserialize(value,
+              specifiedType: const FullType(Progressable))! as Progressable;
+          break;
       }
     }
 
@@ -147,7 +154,7 @@ class _$QuestModel extends QuestModel {
   @override
   final Fetchable<Question> selectedQuestionF;
   @override
-  final Fetchable<Choice?> selectedChoiceF;
+  final Fetchable<String?> selectedChoiceF;
   @override
   final Fetchable<int> currentQuestPositionF;
   @override
@@ -158,6 +165,8 @@ class _$QuestModel extends QuestModel {
   final Progressable goToNextQuestionP;
   @override
   final Progressable automaticallyGoToNextQuestionP;
+  @override
+  final Progressable startQuestP;
 
   factory _$QuestModel([void Function(QuestModelBuilder)? updates]) =>
       (new QuestModelBuilder()..update(updates))._build();
@@ -172,7 +181,8 @@ class _$QuestModel extends QuestModel {
       required this.rightChoicesCountF,
       required this.questDurationF,
       required this.goToNextQuestionP,
-      required this.automaticallyGoToNextQuestionP})
+      required this.automaticallyGoToNextQuestionP,
+      required this.startQuestP})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         questionsF, r'QuestModel', 'questionsF');
@@ -194,6 +204,8 @@ class _$QuestModel extends QuestModel {
         goToNextQuestionP, r'QuestModel', 'goToNextQuestionP');
     BuiltValueNullFieldError.checkNotNull(automaticallyGoToNextQuestionP,
         r'QuestModel', 'automaticallyGoToNextQuestionP');
+    BuiltValueNullFieldError.checkNotNull(
+        startQuestP, r'QuestModel', 'startQuestP');
   }
 
   @override
@@ -216,7 +228,9 @@ class _$QuestModel extends QuestModel {
         rightChoicesCountF == other.rightChoicesCountF &&
         questDurationF == other.questDurationF &&
         goToNextQuestionP == other.goToNextQuestionP &&
-        automaticallyGoToNextQuestionP == other.automaticallyGoToNextQuestionP;
+        automaticallyGoToNextQuestionP ==
+            other.automaticallyGoToNextQuestionP &&
+        startQuestP == other.startQuestP;
   }
 
   @override
@@ -232,6 +246,7 @@ class _$QuestModel extends QuestModel {
     _$hash = $jc(_$hash, questDurationF.hashCode);
     _$hash = $jc(_$hash, goToNextQuestionP.hashCode);
     _$hash = $jc(_$hash, automaticallyGoToNextQuestionP.hashCode);
+    _$hash = $jc(_$hash, startQuestP.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -249,7 +264,8 @@ class _$QuestModel extends QuestModel {
           ..add('questDurationF', questDurationF)
           ..add('goToNextQuestionP', goToNextQuestionP)
           ..add(
-              'automaticallyGoToNextQuestionP', automaticallyGoToNextQuestionP))
+              'automaticallyGoToNextQuestionP', automaticallyGoToNextQuestionP)
+          ..add('startQuestP', startQuestP))
         .toString();
   }
 }
@@ -278,9 +294,9 @@ class QuestModelBuilder implements Builder<QuestModel, QuestModelBuilder> {
   set selectedQuestionF(Fetchable<Question>? selectedQuestionF) =>
       _$this._selectedQuestionF = selectedQuestionF;
 
-  Fetchable<Choice?>? _selectedChoiceF;
-  Fetchable<Choice?>? get selectedChoiceF => _$this._selectedChoiceF;
-  set selectedChoiceF(Fetchable<Choice?>? selectedChoiceF) =>
+  Fetchable<String?>? _selectedChoiceF;
+  Fetchable<String?>? get selectedChoiceF => _$this._selectedChoiceF;
+  set selectedChoiceF(Fetchable<String?>? selectedChoiceF) =>
       _$this._selectedChoiceF = selectedChoiceF;
 
   Fetchable<int>? _currentQuestPositionF;
@@ -310,6 +326,11 @@ class QuestModelBuilder implements Builder<QuestModel, QuestModelBuilder> {
           Progressable? automaticallyGoToNextQuestionP) =>
       _$this._automaticallyGoToNextQuestionP = automaticallyGoToNextQuestionP;
 
+  Progressable? _startQuestP;
+  Progressable? get startQuestP => _$this._startQuestP;
+  set startQuestP(Progressable? startQuestP) =>
+      _$this._startQuestP = startQuestP;
+
   QuestModelBuilder();
 
   QuestModelBuilder get _$this {
@@ -325,6 +346,7 @@ class QuestModelBuilder implements Builder<QuestModel, QuestModelBuilder> {
       _questDurationF = $v.questDurationF;
       _goToNextQuestionP = $v.goToNextQuestionP;
       _automaticallyGoToNextQuestionP = $v.automaticallyGoToNextQuestionP;
+      _startQuestP = $v.startQuestP;
       _$v = null;
     }
     return this;
@@ -363,9 +385,9 @@ class QuestModelBuilder implements Builder<QuestModel, QuestModelBuilder> {
                 rightChoicesCountF, r'QuestModel', 'rightChoicesCountF'),
             questDurationF: BuiltValueNullFieldError.checkNotNull(
                 questDurationF, r'QuestModel', 'questDurationF'),
-            goToNextQuestionP:
-                BuiltValueNullFieldError.checkNotNull(goToNextQuestionP, r'QuestModel', 'goToNextQuestionP'),
-            automaticallyGoToNextQuestionP: BuiltValueNullFieldError.checkNotNull(automaticallyGoToNextQuestionP, r'QuestModel', 'automaticallyGoToNextQuestionP'));
+            goToNextQuestionP: BuiltValueNullFieldError.checkNotNull(goToNextQuestionP, r'QuestModel', 'goToNextQuestionP'),
+            automaticallyGoToNextQuestionP: BuiltValueNullFieldError.checkNotNull(automaticallyGoToNextQuestionP, r'QuestModel', 'automaticallyGoToNextQuestionP'),
+            startQuestP: BuiltValueNullFieldError.checkNotNull(startQuestP, r'QuestModel', 'startQuestP'));
     replace(_$result);
     return _$result;
   }

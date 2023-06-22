@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:havayot/data/models/choice.dart';
 import 'package:havayot/presentation/widgets/hv_theme.dart';
 import 'package:havayot/presentation/widgets/tappable.dart';
 
-typedef OnQuestionTabTap = void Function(Choice);
+typedef OnQuestionTabTap = void Function(String);
 
 class CardChoice extends StatelessWidget {
-  final Choice choice;
+  final String choice;
   final OnQuestionTabTap onTap;
   final Color color;
 
@@ -21,7 +20,7 @@ class CardChoice extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = HvTheme.of(context);
     return Tappable(
-      key: Key(choice.value),
+      key: Key(choice),
       child: Card(
         elevation: 6.0,
         shape: const CircleBorder(),
@@ -31,10 +30,8 @@ class CardChoice extends StatelessWidget {
           decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(12)),
           child: Center(
             child: Text(
-              choice.value,
-              style: theme.h2.copyWith(
-                color: theme.white1,
-              ),
+              choice,
+              style: theme.h1,
             ),
           ),
         ),

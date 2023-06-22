@@ -1,9 +1,24 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:havayot/data/models/choice.dart';
 import 'package:havayot/data/models/question.dart';
+import 'package:havayot/data/services/api/hv_api.dart';
 
 abstract class QuestRepository {
   Future<BuiltList<Question>> getQuestions();
+}
+
+class CloudQuestRepository implements QuestRepository {
+  final HvApi api;
+  CloudQuestRepository({required this.api});
+  @override
+  Future<BuiltList<Question>> getQuestions() async {
+    try {
+      final response = await api.getQuestions();
+      return response.body!;
+    } catch (e) {
+      print(e);
+      return BuiltList<Question>();
+    }
+  }
 }
 
 class LocalQuestRepository implements QuestRepository {
@@ -12,34 +27,24 @@ class LocalQuestRepository implements QuestRepository {
     return [
       Question((b) => b
         ..value = "Quel roi a écrit la majorité des Psaumes dans la Bible ?"
-        ..choices = ['David', 'Salomon', 'Moïse', 'Samuel']
-            .map((e) => Choice((c) => c..value = e)).toBuiltList().toBuilder()
-        ..answer = 'David'
-      ),
+        ..options = "David, Salomon, Moïse, Samuel"
+        ..answer = 'David'),
       Question((b) => b
         ..value = "Combien de disciples Jésus avait-il ?"
-        ..choices = ['12', '10', '7', '15']
-            .map((e) => Choice((c) => c..value = e)).toBuiltList().toBuilder()
-        ..answer = '12'
-      ),
+        ..options = "12,10, 7, 15"
+        ..answer = '12'),
       Question((b) => b
         ..value = "Quel apôtre a renié Jésus trois fois avant le chant du coq ?"
-        ..choices = ['Pierre', 'Jean', 'Jacques', 'André']
-            .map((e) => Choice((c) => c..value = e)).toBuiltList().toBuilder()
-        ..answer = 'Pierre'
-      ),
+        ..options = "Pierre, Jean, Jacques, André"
+        ..answer = 'Pierre'),
       Question((b) => b
         ..value = "Quel est le premier livre de l'Ancien Testament ?"
-        ..choices = ['Genèse', 'Exode', 'Lévitique', 'Nombres']
-            .map((e) => Choice((c) => c..value = e)).toBuiltList().toBuilder()
-        ..answer = 'Genèse'
-      ),
+        ..options = "Genèse, Exode, Lévitique, Nombres"
+        ..answer = 'Genèse'),
       Question((b) => b
         ..value = "Quel est le dernier livre de l'Ancien Testament ?"
-        ..choices = ['Malachie', 'Zacharie', 'Joël', 'Michée']
-            .map((e) => Choice((c) => c..value = e)).toBuiltList().toBuilder()
-        ..answer = 'Malachie'
-      ),
+        ..options = "Malachie, Zacharie, Joël, Michée"
+        ..answer = 'Malachie'),
     ].toBuiltList();
   }
 }

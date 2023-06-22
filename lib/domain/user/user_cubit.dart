@@ -1,11 +1,11 @@
+import 'package:able/able.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:havayot/common/hv_cubit.dart';
 import 'package:havayot/domain/navigation/navigation_cubit.dart';
 
 part 'user_cubit.g.dart';
 
-class UserCubit extends HvCubit<UserModel> {
+class UserCubit extends AbleCubit<UserModel> {
   final NavigationCubit navigationCubit;
 
   UserCubit({required this.navigationCubit}) : super(UserModel((b) => b)) {

@@ -4,7 +4,6 @@ import 'package:chopper/chopper.dart';
 import 'package:havayot/common/serializers.dart';
 
 class BuiltValueConverter extends JsonConverter {
-
   @override
   Request convertRequest(Request request) {
     return super.convertRequest(
@@ -18,9 +17,9 @@ class BuiltValueConverter extends JsonConverter {
   }
 
   @override
-  Response<ResultType> convertResponse<ResultType, Item>(Response response) {
+  Future<Response<ResultType>> convertResponse<ResultType, Item>(Response response) async {
     // use [JsonConverter] to decode json
-    final jsonRes = super.convertResponse(response);
+    final jsonRes = await super.convertResponse(response);
     final body = _decode<Item>(jsonRes.body);
     return jsonRes.copyWith<ResultType>(body: body);
   }
@@ -35,7 +34,6 @@ class BuiltValueConverter extends JsonConverter {
       if (entity is List) return _deserializeListOf<T>(entity);
       return _deserialize<T>(entity);
     } catch (e) {
-      d('$e');
       return null;
     }
   }
@@ -48,5 +46,4 @@ class BuiltValueConverter extends JsonConverter {
         serializers.serializerForType(T) as Serializer<T>,
         value,
       );
-
 }

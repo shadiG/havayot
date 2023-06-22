@@ -17,19 +17,17 @@ class QuestAppBar extends StatelessWidget {
     return Builder(
       builder: (context) {
         final questionsF = context.select((QuestRouteCubit value) => value.state.questionsF);
-        final selectedQuestionF =
-            context.select((QuestRouteCubit value) => value.state.selectedQuestionF);
+        final selectedQuestionF = context.select((QuestRouteCubit value) => value.state.selectedQuestionF);
 
-        final rightChoicesCountF =
-            context.select((QuestRouteCubit value) => value.state.rightChoicesCountF);
+        final rightChoicesCountF = context.select((QuestRouteCubit value) => value.state.rightChoicesCountF);
 
         return widgetForFetchable(
           context: context,
           fetchable: combine3F(f1: questionsF, f2: selectedQuestionF, f3: rightChoicesCountF),
           buildSuccess: (context, data) {
-            final questions = data.item1;
-            final selectedQuestion = data.item2;
-            final rightChoicesCount = data.item3;
+            final questions = data.$1;
+            final selectedQuestion = data.$2;
+            final rightChoicesCount = data.$3;
             final progressBarRatio = selectedQuestion.progression(questions);
 
             return Container(
